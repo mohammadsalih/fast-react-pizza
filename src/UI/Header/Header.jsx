@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import SearchOrder from "../../features/order/SearchOrder";
+import UserName from "../../features/user/userName";
 
 function Header() {
   return (
-    <header className="flex flex-row w-full flex-nowrap">
-      <Link to="/" className="flex-1">
+    <header className="flex w-full  flex-row flex-nowrap items-center justify-between bg-yellow-400 px-6 py-4 ">
+      <Link to="/" className="tracking-widest">
         FAST REACT PIZZA CO.
       </Link>
-      <SearchOrder className="flex-1" />
-      <p className="flex-1">mohammad</p>
+      <SearchOrder />
+      <UserName />
     </header>
   );
 }
-
 export default Header;

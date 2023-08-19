@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom";
 import SearchOrder from "../../features/order/SearchOrder";
-import UserName from "../../features/user/userName";
+import Username from "../../features/user/Username";
 
 function Header() {
   return (
-    <header className="flex w-full  flex-row flex-nowrap items-center justify-between bg-yellow-400 px-6 py-4 ">
+    <header className="border-bborder-b flex items-center justify-between border-b border-stone-200 bg-yellow-400 px-4 py-3 uppercase sm:px-6">
       <Link to="/" className="tracking-widest">
-        FAST REACT PIZZA CO.
+        Fast React Pizza Co.
       </Link>
+
       <SearchOrder />
-      <UserName />
+      <Username />
     </header>
   );
 }
+
 export default Header;

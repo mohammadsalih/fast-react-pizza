@@ -1,22 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  cart: [
-    {
-      id: 1,
-      name: 'Pizza',
-      quantity: 1,
-      unitPrice: 10,
-      totalPrice: 10,
-    },
-    {
-      id: 2,
-      name: 'Pizza tacco ',
-      quantity: 4,
-      unitPrice: 14,
-      totalPrice: 56,
-    },
-  ],
+  cart: [],
 };
 
 const cartSlice = createSlice({
@@ -24,23 +9,54 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem(state, action) {
-      state.cart = action.payload;
+      state.cart.push(action.payload);
     },
     deleteItem(state, action) {
-      state.cart = action.payload;
+      state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
-    IncreaseItemQuantity(state, action) {
-      state.cart = action.payload;
+    increaseItemQuantity(state, action) {
+      const item = state.cart.find((item) => item.id === action.payload);
+
+      item.quantity++;
+      item.totalPrice = item.quantity * item.unitPrice;
     },
     decreaseItemQuantity(state, action) {
-      state.cart = action.payload;
+      const item = state.cart.find((item) => item.id === action.payload);
+
+      item.quantity--;
+      item.totalPrice = item.quantity * item.unitPrice;
     },
-    clearCart(state, action) {
-      state.cart = action.payload;
+    clearCart(state) {
+      state.cart = [];
     },
   },
 });
 
-export const { updateCart } = cartSlice.actions;
+export const {
+  addItem,
+  deleteItem,
+  increaseItemQuantity,
+  decreaseItemQuantity,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
+
+export const getCart = (state) => state.cart.cart;
+
+export const getCartItem = (state, id) =>
+  state.cart.cart.find((item) => item.id === id);
+
+export const getTotalCartQuantity = (state) =>
+  state.cart.cart.reduce((accumulator, currentItem) => {
+    accumulator += currentItem.quantity;
+
+    return accumulator;
+  }, 0);
+
+export const getTotalCartPrice = (state) =>
+  state.cart.cart.reduce((accumulator, currentItem) => {
+    accumulator += currentItem.totalPrice;
+
+    return accumulator;
+  }, 0);

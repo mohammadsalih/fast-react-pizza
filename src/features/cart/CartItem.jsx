@@ -1,34 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../UI/Button/Button';
 import { formatCurrency } from '../../utilities/helpers';
-import {
-  decreaseItemQuantity,
-  deleteItem,
-  getCartItem,
-  increaseItemQuantity,
-} from './cartSlice';
+import DeleteButton from '../../UI/DeleteButton/DeleteButton';
+import UpdateCartItemQuantity from '../../UI/updateCartItemQuantity/updateCartItemQuantity';
 
 function CartItem({ item }) {
-  const dispatch = useDispatch();
-  const { id, name, quantity, totalPrice } = item;
-
-  const itemInCart = useSelector((state) => getCartItem(state, id));
-
-  function handleDeleteItem() {
-    dispatch(deleteItem(id));
-  }
-
-  function handleIncreaseItemQuantity() {
-    dispatch(increaseItemQuantity(id));
-  }
-  function handleDecreaseItemQuantity() {
-    if (itemInCart.quantity === 1) {
-      handleDeleteItem(id);
-      return;
-    }
-
-    dispatch(decreaseItemQuantity(id));
-  }
+  const { pizzaId, name, quantity, totalPrice } = item;
 
   return (
     <li className="py-3 sm:flex sm:items-center sm:justify-between">
@@ -39,21 +14,8 @@ function CartItem({ item }) {
         <p className="text-sm font-bold">{formatCurrency(totalPrice)}</p>
 
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Button type="alter" onClick={handleDecreaseItemQuantity}>
-              -
-            </Button>
-
-            <p>{itemInCart.quantity}</p>
-
-            <Button type="alter" onClick={handleIncreaseItemQuantity}>
-              +
-            </Button>
-          </div>
-
-          <Button type="small" onClick={handleDeleteItem}>
-            Delete
-          </Button>
+          <UpdateCartItemQuantity pizzaId={pizzaId} />
+          <DeleteButton pizzaId={pizzaId} />
         </div>
       </div>
     </li>

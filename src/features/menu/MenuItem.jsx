@@ -1,39 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../UI/Button/Button';
 import { formatCurrency } from '../../utilities/helpers';
-import {
-  addItem,
-  decreaseItemQuantity,
-  deleteItem,
-  getCartItem,
-  increaseItemQuantity,
-} from '../cart/cartSlice';
+import { addItem, getItemQuantityById } from '../cart/cartSlice';
+import DeleteButton from '../../UI/DeleteButton/DeleteButton';
+import UpdateCartItemQuantity from '../../UI/updateCartItemQuantity/updateCartItemQuantity';
 
 function MenuItem({ pizza }) {
+  const {
+    id: pizzaId,
+    name,
+    unitPrice,
+    ingredients,
+    soldOut,
+    imageUrl,
+  } = pizza;
+
   const dispatch = useDispatch();
 
-  const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const itemQuantityInCart = useSelector(getItemQuantityById(pizzaId));
+  const isInCart = itemQuantityInCart > 0;
 
-  const itemInCart = useSelector((state) => getCartItem(state, id));
   function handleAddItem() {
     dispatch(
-      addItem({ id, name, unitPrice, quantity: 1, totalPrice: unitPrice })
+      addItem({
+        pizzaId,
+        name,
+        unitPrice,
+        quantity: 1,
+        totalPrice: unitPrice,
+      })
     );
-  }
-
-  function handleDeleteItem() {
-    dispatch(deleteItem(id));
-  }
-  function handleIncreaseItemQuantity() {
-    dispatch(increaseItemQuantity(id));
-  }
-  function handleDecreaseItemQuantity() {
-    if (itemInCart.quantity === 1) {
-      handleDeleteItem(id);
-      return;
-    }
-
-    dispatch(decreaseItemQuantity(id));
   }
 
   return (
@@ -58,28 +54,15 @@ function MenuItem({ pizza }) {
           )}
 
           {!soldOut &&
-            (!itemInCart ? (
+            (isInCart ? (
+              <div className="flex items-center gap-6">
+                <UpdateCartItemQuantity pizzaId={pizzaId} />
+                <DeleteButton pizzaId={pizzaId} />
+              </div>
+            ) : (
               <Button type="small" onClick={handleAddItem}>
                 Add to cart
               </Button>
-            ) : (
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <Button type="alter" onClick={handleDecreaseItemQuantity}>
-                    -
-                  </Button>
-
-                  <p>{itemInCart.quantity}</p>
-
-                  <Button type="alter" onClick={handleIncreaseItemQuantity}>
-                    +
-                  </Button>
-                </div>
-
-                <Button type="small" onClick={handleDeleteItem}>
-                  delete
-                </Button>
-              </div>
             ))}
         </div>
       </div>

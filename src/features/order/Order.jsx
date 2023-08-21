@@ -1,14 +1,14 @@
 // Test ID: IIDSAT
 
-import OrderItem from "./OrderItem";
+import OrderItem from './OrderItem';
 
-import { useLoaderData } from "react-router-dom";
-import { getOrder } from "../../services/apiRestaurant";
+import { useLoaderData } from 'react-router-dom';
+import { getOrder } from '../../services/apiRestaurant';
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
-} from "../../utilities/helpers";
+} from '../../utilities/helpers';
 
 function Order() {
   const order = useLoaderData();
@@ -46,10 +46,8 @@ function Order() {
       <div className="flex flex-wrap items-center justify-between gap-2 bg-stone-200 px-6 py-5">
         <p className="font-medium">
           {deliveryIn >= 0
-            ? `Only ${calcMinutesLeft(
-                estimatedDelivery,
-              )} minutes left 😃`
-            : "Order should have arrived"}
+            ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+            : 'Order should have arrived'}
         </p>
         <p className="text-xs text-stone-500">
           (Estimated delivery: {formatDate(estimatedDelivery)})
@@ -72,8 +70,7 @@ function Order() {
           </p>
         )}
         <p className="font-bold">
-          To pay on delivery:{" "}
-          {formatCurrency(orderPrice + priorityPrice)}
+          To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
     </div>

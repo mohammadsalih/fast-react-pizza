@@ -24,7 +24,10 @@ function CreateOrder() {
     address: userAddress,
     error: gettingAddressError,
     status: addressStatus,
+    position,
   } = useSelector((state) => state.user);
+
+  const addressIsLoading = addressStatus === 'loading';
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
@@ -92,7 +95,7 @@ function CreateOrder() {
             <span className="absolute right-1 top-[2.21rem] sm:top-[0.3rem]">
               <Button
                 type="small"
-                disabled={addressStatus === 'loading'}
+                disabled={addressIsLoading}
                 onClick={(e) => {
                   e.preventDefault();
                   dispatch(fetchAddress());
@@ -120,7 +123,16 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <Button disabled={isSubmitting} type="primary">
+          <input
+            type="hidden"
+            name="position"
+            value={
+              position.latitude && position.longitude
+                ? `${position.latitude},${position.longitude}`
+                : ''
+            }
+          />
+          <Button disabled={isSubmitting || addressIsLoading} type="primary">
             {isSubmitting ? 'Placing order....' : `Order now ${totalePrice}`}
           </Button>
         </div>

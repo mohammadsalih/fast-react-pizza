@@ -32,9 +32,9 @@ const userSlice = createSlice({
         state.address = action.payload.address;
         state.position = action.payload.position;
       })
-      .addCase(fetchAddress.rejected, (state) => {
+      .addCase(fetchAddress.rejected, (state, action) => {
         state.status = 'error';
-        state.error = `Error while fetching the user address , error message : (${state.error.message})`;
+        state.error = `Error while fetching the user address , error message : (${action.error.message})`;
       }),
 });
 
